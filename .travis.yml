@@ -1,0 +1,26 @@
+dist: trusty
+language: cpp
+sudo: true
+compiler: clang
+
+python:
+  - "2.7"
+
+install:
+  - sudo apt-get install libpango1.0-dev
+  - sudo apt-get install libcairo2-dev
+  - sudo apt-get install libzzip-dev
+  - sudo apt-get install libegl1-mesa-dev libgles2-mesa-dev
+  - sudo apt-get install libsdl2-dev
+  - sudo apt-get install libxt-dev
+  - sudo apt-get install libxaw7-dev
+  - sudo apt-get install libc++abi-dev
+  - sudo apt-get install libc++-dev
+  - curl -o waf https://waf.io/waf-2.0.13
+  - git submodule add -f https://github.com/facebook/yoga.git
+  - git submodule add -f https://github.com/mimon/ogre.git
+  - cd ogre && git checkout v2-1-wscript && cd ..
+
+script:
+  - python waf configure build --targets=tests
+  - build/tests

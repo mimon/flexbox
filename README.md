@@ -1,5 +1,5 @@
 # Flexbox for Ogre3D 2.1
-This library will bring you a foundation to build your GUI to be rendered with Ogre 2.1. The library:
+This library will bring you a foundation to build a flexbox based GUI. Rendered with Ogre 2.1. The library:
 * Uses [Yoga](https://yogalayout.com/) to calculate layouts using CSS's [flexbox concept](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
 * Draws boxes with [Cairo graphics](https://www.cairographics.org/) and SDL2
 * Draws text with [Pango](https://www.pango.org/)
@@ -14,7 +14,7 @@ The lack of my CMake skills puts a "CMake configuration" on my TODO. Until then,
 * `flexbox/*.cpp`
 * [Clone the Yoga repo](https://github.com/facebook/yoga) and compile yoga/yoga/*.cpp
 
-The library uses C++11 features and standard library. If you use clang, you need to set the compile flags `-std=c++11` and `-stdlib=libc++`.
+The library uses C++14 features and standard library. If you use clang, you need to set the compile flags `-std=c++14` and `-stdlib=libc++`.
 
 ### Linking
 Link against
@@ -62,7 +62,7 @@ sheet.justify_content = YGJustifyCenter;
 sheet.align_items     = YGAlignCenter;
 ```
 
-Now, lets create the "canvases" for the two boxes and attach them under the root.
+Now, lets create the "canvases" for the two boxes and attach them under the root. Canvases holds the structures for the drawing library.
 ```c++
 typedef std::shared_ptr<flexbox_canvas>       canvas_ptr;
 typedef std::shared_ptr<flexbox_canvas_text>  canvas_text_ptr;
@@ -87,7 +87,7 @@ root.stylesheet.justify_content = YGJustifyCenter;
 root.stylesheet.align_items     = YGAlignCenter;
 ```
 
-Lastly, we need to calculate the layout, paint the boxes, create the textures, position the SceneNodes etc.
+Lastly, let the root node calculate the layout, paint the boxes, create the textures, position the SceneNodes etc.
 ```c++
 const int window_width  = 1024;
 const int window_height = 768;

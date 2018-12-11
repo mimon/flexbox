@@ -1,0 +1,7 @@
+build/
+.DS_Store
+.lock-waf_darwin_build
+Ogre.log
+yoga/
+.clang_complete
+*.pyc
