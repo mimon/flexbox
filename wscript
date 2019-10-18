@@ -1,4 +1,4 @@
-import os
+import os, sys
 from waflib import TaskGen, Task
 
 out = 'build'
@@ -22,7 +22,7 @@ def options(opt):
 		opt.add_option('--ogre-sdk-path', action='store', default='./ogre', help='Path to sdk directory containing "include/OGRE/Ogre.h" and "lib/"')
 	opt.add_option('--yoga-path', action='store', default='./yoga', help='Path to yoga source')
 
-	opt.load('compiler_cxx compiler_c')
+	opt.load('compiler_cxx compiler_c xcode6')
 
 def configure(cnf):
 	if cnf.path.make_node('ogre').exists():
@@ -40,6 +40,13 @@ def configure(cnf):
 		cnf.env.STLIB_OgreMainStatic = 'OgreMainStatic'
 		cnf.env.STLIB_OgreHlmsUnlitStatic = 'OgreHlmsUnlitStatic'
 		cnf.env.STLIB_RenderSystem_NULL = 'RenderSystem_NULLStatic'
+		cnf.env.LIB_fmt = 'fmt'
+
+	if sys.platform == 'darwin':
+		cnf.env.append_value('INCLUDES', '%s/include/OGRE/RenderSystems/Metal' % ogre_path)
+		cnf.env.STLIB_RenderSystem_Metal = 'RenderSystem_MetalStatic'
+		cnf.env.LIB_freeimage = 'freeimage'
+		cnf.env.LIBPATH_freeimage = '/usr/local/lib'
 
 	if cnf.options.yoga_path:
 		yoga_path = cnf.options.yoga_path
@@ -57,13 +64,13 @@ def configure(cnf):
 
 	cnf.check_cfg(package='zziplib', uselib_store='zzip', args=['--cflags', '--libs'])
 	cnf.check_cfg(package='sdl2', uselib_store='sdl2', args=['--cflags', '--libs'])
+	cnf.check_cfg(package='sdl2_image', uselib_store='sdl2', args=['--cflags', '--libs'], mandatory = False)
 
-	cnf.env.LIB_freeimage = 'freeimage'
 
 	# Enable non-POSIX pthreads APIs, which by default are not included in the pthreads header
 	cnf.env.append_value('CXXFLAGS', ['-D_XOPEN_SOURCE', '-std=c++11', '-D_DEBUG', '-O0', '-stdlib=libc++', '-D_DARWIN_C_SOURCE'])
 
-	cnf.load('compiler_cxx compiler_c')
+	cnf.load('compiler_cxx compiler_c xcode6')
 
 from waflib import Task
 Task.Task.print_include_absolute_paths = lambda self: '\r\n'.join(['-I%s' % x for x in self.generator.includes_nodes])
@@ -95,14 +102,15 @@ def build(bld):
 			includes = common_includes + [
 
 			],
-			uselib = 'cairo pango pangocairo glib freetype freeimage',
-			use = 'yoga OgreMainStatic OgreHlmsUnlitStatic RenderSystem_NULL',
+			uselib = 'cairo pango pangocairo glib freetype freeimage sdl2 zzip fmt',
+			use = 'yoga OgreMainStatic OgreHlmsUnlitStatic RenderSystem_Metal flexbox',
 			cxxflags = ['-std=c++14', '-D_DARWIN_C_SOURCE', '-g'],
 			linkflags = '-stdlib=libc++',
-			framework = 'Cocoa'
+			framework = 'Cocoa Metal QuartzCore'
 		)
 
 	app('app1')
+	app('app2')
 
 	bld.stlib(
 		target = 'flexbox',
@@ -113,10 +121,10 @@ def build(bld):
 		includes = common_includes + [
 
 		],
-		uselib = 'cairo pango pangocairo glib freetype',
+		uselib = 'cairo pango pangocairo glib freetype sdl2',
 		use = 'yoga OgreMainStatic OgreHlmsUnlitStatic RenderSystem_NULL',
 		cxxflags = ['-std=c++14', '-D_DARWIN_C_SOURCE', '-g'],
-		linkflags = '-stdlib=libc++'
+		linkflags = '-stdlib=libc++',
 	)
 
 	bld.program(
@@ -128,14 +136,14 @@ def build(bld):
 			]
 		),
 		includes = common_includes,
-		uselib = 'yoga xt xaw7 zzip sdl2 x11',
-		use = 'yoga OgreMainStatic OgreHlmsUnlitStatic RenderSystem_NULL cairo pango pangocairo glib freetype',
+		uselib = 'yoga xt xaw7 zzip sdl2 x11 freeimage',
+		use = 'yoga OgreMainStatic OgreHlmsUnlitStatic RenderSystem_NULL cairo pango pangocairo glib freetype freeimage sdl2_image',
 		linkflags = ['-stdlib=libc++', '-ldl'],
 		framework = 'Cocoa'
 	)
 
 	bld.stlib(
 		target='yoga',
-		source=bld.path.ant_glob('yoga/yoga/*.cpp'),
+		source=bld.path.ant_glob(['yoga/yoga/*.cpp', 'yoga/yoga/event/*.cpp']),
 		includes=['yoga']
 	)
