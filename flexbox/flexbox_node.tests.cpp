@@ -19,7 +19,7 @@ TEST_CASE("flexbox_node") {
     root.layout_and_paint(100, 100);
 
     auto yoga_node = child->layout_node.get();
-    CHECK(YGNodeGetMeasureFunc(yoga_node) != nullptr);
+    CHECK(YGNodeHasMeasureFunc(yoga_node));
     CHECK(YGNodeLayoutGetWidth(yoga_node) == 12.0f);
     CHECK(YGNodeLayoutGetHeight(yoga_node) == 12.0f);
     CHECK(child->computed_layout_dimensions == Ogre::Vector2(12, 12));
