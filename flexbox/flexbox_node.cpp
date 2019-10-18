@@ -150,11 +150,19 @@ void flexbox_node::layout_apply_style() {
   const auto &rs   = this->stylesheet;
   YGNode *    node = this->layout_node.get();
 
-  if (rs.width >= 0) {
-    YGNodeStyleSetWidth(node, rs.width);
+  if (rs.width.value >= 0) {
+    if (rs.width.is_pixel) {
+      YGNodeStyleSetWidth(node, rs.width.value);
+    } else {
+      YGNodeStyleSetWidthPercent(node, rs.width.value);
+    }
   }
-  if (rs.height >= 0) {
-    YGNodeStyleSetHeight(node, rs.height);
+  if (rs.height.value >= 0) {
+    if (rs.height.is_pixel) {
+      YGNodeStyleSetHeight(node, rs.height.value);
+    } else {
+      YGNodeStyleSetHeightPercent(node, rs.height.value);
+    }
   }
 
   YGNodeStyleSetPosition(node, YGEdgeLeft, rs.left);

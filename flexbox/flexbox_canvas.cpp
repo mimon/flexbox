@@ -63,20 +63,20 @@ Ogre::Vector2 flexbox_canvas::measure(flexbox_stylesheet const &style, float par
 
   switch (width_mode) {
     case YGMeasureModeUndefined:
-      dim.x = style.width;
+      dim.x = style.width.value;
       break;
     case YGMeasureModeAtMost:
-      dim.x = fmin(parent_width, style.width);
+      dim.x = fmin(parent_width, style.width.value);
       break;
     case YGMeasureModeExactly:
       dim.x = parent_width;
   }
   switch (height_mode) {
     case YGMeasureModeUndefined:
-      dim.y = style.height;
+      dim.y = style.height.value;
       break;
     case YGMeasureModeAtMost:
-      dim.y = fmin(parent_height, style.height);
+      dim.y = fmin(parent_height, style.height.value);
       break;
     case YGMeasureModeExactly:
       dim.y = parent_height;

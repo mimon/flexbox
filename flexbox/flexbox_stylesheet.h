@@ -12,6 +12,19 @@ typedef int   pixels;
 typedef int   points;
 typedef float percent;
 
+struct pixels_or_percent {
+  bool  is_pixel = true;
+  bool  is_none  = true;
+  float value;
+
+  pixels_or_percent(pixels px)
+    : is_pixel(true), value(px) {
+  }
+  pixels_or_percent(percent pct)
+    : is_pixel(false), value(pct) {
+  }
+};
+
 class flexbox_stylesheet {
   public:
   void set_padding(pixels top_right_bottom_left);
@@ -27,8 +40,8 @@ class flexbox_stylesheet {
   pixels top  = 0;
   pixels left = 0;
 
-  pixels width  = -1;
-  pixels height = -1;
+  pixels_or_percent width  = -1;
+  pixels_or_percent height = -1;
 
   pixels margin_top    = 0;
   pixels margin_right  = 0;
