@@ -2,7 +2,7 @@
 #include <bitset>
 #include "OgreColourValue.h"
 #include "OgreVector2.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 #include "Yoga.h"
 #include "pango/pangocairo.h"
 

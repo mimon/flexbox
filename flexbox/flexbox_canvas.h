@@ -3,8 +3,8 @@
 #include <memory>
 #include <vector>
 #include "OgreVector2.h"
-#include "SDL2/SDL.h"
-#include "cairo/cairo.h"
+#include "SDL.h"
+#include "cairo.h"
 
 #include "flexbox_stylesheet.h"
 

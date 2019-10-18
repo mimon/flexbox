@@ -3,7 +3,7 @@
 #include <sstream>
 #include "OgreHardwarePixelBuffer.h"
 #include "OgreTextureManager.h"
-#include "cairo/cairo.h"
+#include "cairo.h"
 #include "pango/pangocairo.h"
 
 namespace flexbox {
