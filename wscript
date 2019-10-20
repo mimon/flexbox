@@ -80,6 +80,7 @@ def build(bld):
 		bld.recurse('ogre')
 	common_source = [
 		'flexbox/*.cpp',
+		'widgets/*.cpp'
 	]
 	common_source_excludes = [
 		'**/*.tests.cpp'
