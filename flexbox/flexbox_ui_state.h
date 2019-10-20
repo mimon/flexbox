@@ -6,9 +6,11 @@ enum flexbox_ui_state_flag {
   pressed,
   unpressed,
   hover,
+  motion,
   click,
   drag,
   dbl_click,
+  grabbed,
   number_of_flags
 };
 typedef std::bitset<number_of_flags> state_flags;

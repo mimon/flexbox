@@ -114,6 +114,24 @@ TEST_CASE("Point and click scenarios") {
     CHECK(state.test(flexbox_ui_state_flag::click) == false);
   }
 
+  SECTION("Drag") {
+    // Pretend we click on this node
+    node.set(flexbox_ui_state_flag::hover);
+    node.set(flexbox_ui_state_flag::pressed);
+    node.set(flexbox_ui_state_flag::motion);
+    // Step forward in time
+    node.transition();
+    // We still have our mouse button down
+    node.set(flexbox_ui_state_flag::hover);
+
+    state = node.transition();
+    CHECK(state.test(flexbox_ui_state_flag::drag) == true);
+
+    // Calculating the state again should not yield any clicks
+    // state = node.transition();
+    // CHECK(state.test(flexbox_ui_state_flag::click) == false);
+  }
+
   SECTION("Button down and then drag out of the node") {
     node.set(flexbox_ui_state_flag::hover);
     node.set(flexbox_ui_state_flag::pressed);

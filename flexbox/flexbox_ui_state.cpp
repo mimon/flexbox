@@ -16,7 +16,15 @@ flexbox_ui_state flexbox_ui_state::transition() {
       }
     } else if (this->test(pressed)) {
       state.set(pressed);
+      this->set(grabbed);
+      if (this->test(motion)) {
+        state.set(drag);
+      }
     }
+  }
+
+  if (this->test(unpressed)) {
+    this->reset(grabbed);
   }
 
   if (this->test(hover)) {

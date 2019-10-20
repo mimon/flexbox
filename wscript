@@ -136,7 +136,7 @@ def build(bld):
 			]
 		),
 		includes = common_includes,
-		uselib = 'yoga xt xaw7 zzip sdl2 x11 freeimage',
+		uselib = 'yoga xt xaw7 zzip sdl2 x11 freeimage fmt',
 		use = 'yoga OgreMainStatic OgreHlmsUnlitStatic RenderSystem_NULL cairo pango pangocairo glib freetype freeimage sdl2_image',
 		linkflags = ['-stdlib=libc++', '-ldl'],
 		framework = 'Cocoa'
